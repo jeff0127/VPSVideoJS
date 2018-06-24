@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<widget id="VPSVideoJS.widget.VPSVideoJS" needsEntityContext="false" xmlns="http://www.mendix.com/widget/1.0/">
+<widget id="VPSVideoJS.widget.VPSVideoJS" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
     <name>VPSVideoJS</name>
     <description>The description of this widget.</description>
 
     <icon />
 
     <properties>
-        <property key="dummyKey" type="string" required="false" defaultValue="">
-            <caption>Dummy key</caption>
-            <category>Appearance</category>
-            <description>This key was added to make the widget work in the Modeler (needs atleast 1 key). Please change/remove this one</description>
+        <property key="videoURL" type="attribute">
+            <caption>Video URL</caption>
+            <category>Behavior</category>
+            <description>The URL to the video to be played.</description>
+            <attributeTypes>
+                <attributeType name="String" />
+            </attributeTypes>
+        </property>
+        <property key="videoType" type="attribute">
+            <caption>Video Type</caption>
+            <category>Behavior</category>
+            <description>The type (mp4, youtube, vimeo) of the video to be played.</description>
+            <attributeTypes>
+                <attributeType name="Enum" />
+            </attributeTypes>
         </property>
     </properties>
 </widget>
