@@ -1,16 +1,19 @@
 <div class="widgetname" data-dojo-attach-point="widgetBase">
 
-    <div>
-
-
+    <div data-dojo-attach-point="videoNode">
         <video
             id="my-player"
             class="video-js vjs-default-skin"
             controls
-            autoplay
-            width="640" height="264"
-            data-setup='{ "techOrder": ["vimeo"], "sources": [{ "type": "video/vimeo", "src": "https://vimeo.com/72025224"}] }'
-        >
+            preload="auto"
+            data-setup='{ "techOrder": ["html5", "youtube", "vimeo"]} '>
+            <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="http://videojs.com/html5-video-support/" target="_blank">
+                supports HTML5 video
+                </a>
+            </p>
         </video>
     </div>
 </div>

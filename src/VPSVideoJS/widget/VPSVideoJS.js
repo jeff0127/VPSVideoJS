@@ -30,12 +30,20 @@ define([
 
         widgetBase: null,
 
+        // DOM elements
+        videoNode: null,
+
+        // Parameters configured in the Modeler.
+        videoURL: "",
+        videoType: "",
+
         // Internal variables.
         _handles: null,
         _contextObj: null,
         _player: null,
 
         constructor: function () {
+            logger.debug(this.id + ".constructor");
             this._handles = [];
         },
 
@@ -49,6 +57,7 @@ define([
             logger.debug(this.id + ".update");
 
             this._contextObj = obj;
+            this._player = video('my-player');
             this._updateRendering(callback);
         },
 
@@ -57,61 +66,58 @@ define([
         },
 
         uninitialize: function () {
+            this._player.dispose();
             logger.debug(this.id + ".uninitialize");
         },
 
         _updateRendering: function (callback) {
             logger.debug(this.id + "._updateRendering");
 
-           // if (this._contextObj !== null) {
+            if (this._contextObj !== null) {
                 dojoStyle.set(this.domNode, "display", "block");
-           // } else {
-           //     dojoStyle.set(this.domNode, "display", "none");
-           // }
 
-           try {
+                try {
+                    var vidURL = this._contextObj.get(this.videoURL);
+                    var vidType = "video/".concat(this._contextObj.get(this.videoType));
+                    var vidSrc = {type: vidType, src: vidURL};
 
-                var options = {};
+                    logger.debug("video source = " + JSON.stringify(vidSrc));
 
-                var player = video('my-player', options, function onPlayerReady() {
-                video.log('Your player is ready!');
-                
-                // In this context, `this` is the player that was created by Video.js.
-                this.play();
-                
-                // How about an event listener?
-                this.on('ended', function() {
-                    video.log('Awww...over so soon?!');
-                });
-                });
-            }
-            catch(err) {
-                logger.debug(err.message);
+                    var options = {};
+    
+                    this._player = video('my-player', options);
+                    this._player.src(vidSrc);
+                }
+                catch(err) {
+                    logger.debug(err.message);
+                }
+            } else {
+                dojoStyle.set(this.domNode, "display", "none");
             }
 
             this._executeCallback(callback, "_updateRendering");
         },
 
         // Shorthand for running a microflow
-        _execMf: function (mf, guid, cb) {
-            logger.debug(this.id + "._execMf");
-            if (mf && guid) {
-                mx.ui.action(mf, {
-                    params: {
-                        applyto: "selection",
-                        guids: [guid]
-                    },
-                    callback: lang.hitch(this, function (objs) {
-                        if (cb && typeof cb === "function") {
-                            cb(objs);
-                        }
-                    }),
-                    error: function (error) {
-                        console.debug(error.description);
-                    }
-                }, this);
-            }
-        },
+        // _execMf: function (mf, guid, cb) {
+        //     logger.debug(this.id + "._execMf");
+        //     if (mf && guid) {
+        //         mx.ui.action(mf, {
+        //             params: {
+        //                 applyto: "selection",
+        //                 guids: [guid]
+        //             },
+        //             callback: lang.hitch(this, function (objs) {
+        //                 if (cb && typeof cb === "function") {
+        //                     cb(objs);
+        //                 }
+        //             }),
+        //             error: function (error) {
+        //                 console.debug(error.description);
+        //             }
+        //         }, this);
+        //     }
+        // },
 
         // Shorthand for executing a callback, adds logging to your inspector
         _executeCallback: function (cb, from) {
