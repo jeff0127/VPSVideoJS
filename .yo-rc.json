@@ -1,0 +1,13 @@
+{
+  "generator-mendix": {
+    "promptValues": {
+      "copyright": "jeffrphillips 2018",
+      "license": "Apache 2",
+      "author": "Jeff Phillips",
+      "boilerplate": "empty",
+      "widgetoptions": [
+        "templates"
+      ]
+    }
+  }
+}
