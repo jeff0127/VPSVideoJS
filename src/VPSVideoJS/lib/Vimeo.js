@@ -41,8 +41,11 @@ THE SOFTWARE. */
 
   var Vimeo = videojs.extend(Tech, {
     constructor: function(options, ready) {
+      logger.debug('vimeo: constructor');
+
       Tech.call(this, options, ready);
-      if(options.poster != "") {this.setPoster(options.poster);}
+
+      //if(options.poster != "") {this.setPoster(options.poster);}
       this.setSrc(this.options_.source.src, true);
 
       // Set the vjs-vimeo class to the player
@@ -54,7 +57,18 @@ THE SOFTWARE. */
     },
 
     dispose: function() {
+      logger.debug('vimeo: dispose');
+      
+      this.vimeo.api('unload');
+      delete this.vimeo;
+
       this.el_.parentNode.className = this.el_.parentNode.className.replace(' vjs-vimeo', '');
+      this.el_.parentNode.removeChild(this.el_);
+
+      //Needs to be called after the YouTube player is destroyed, otherwise there will be a null reference exception
+      Tech.prototype.dispose.call(this);
+
+
     },
 
     createEl: function() {
@@ -317,17 +331,17 @@ THE SOFTWARE. */
         var image = new Image();
         image.onload = function(){
           // Onload thumbnail
-          if('naturalHeight' in this){
-            if(this.naturalHeight <= 90 || this.naturalWidth <= 120) {
-              this.onerror();
-              return;
-            }
-          } else if(this.height <= 90 || this.width <= 120) {
-            this.onerror();
-            return;
-          }
+          //if('naturalHeight' in this){
+          //  if(this.naturalHeight <= 90 || this.naturalWidth <= 120) {
+          //    this.onerror();
+          //    return;
+          //  }
+          //} else if(this.height <= 90 || this.width <= 120) {
+          //  this.onerror();
+          //  return;
+          //}
 
-          this.poster_ = uri;
+          //this.poster_ = uri;
           this.trigger('posterchange');
         }.bind(this);
         image.onerror = function(){};
@@ -493,6 +507,7 @@ THE SOFTWARE. */
            * @param eventName (String): Name of the event to stop listening for.
            */
           removeEvent: function(eventName) {
+            logger.debug('vimeo: remove event');
               if (!this.element) {
                   return false;
               }

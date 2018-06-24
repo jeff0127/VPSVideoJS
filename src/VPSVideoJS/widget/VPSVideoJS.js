@@ -51,6 +51,10 @@ define([
             logger.debug(this.id + ".postCreate");
             mxui.dom.addCss(require.toUrl("VPSVideoJS/lib/video-js.min.css"));
 
+            var options = {};
+    
+            this._player = video('my-player', options);
+            video.registerTech('Vimeo', Vimeo);
         },
 
         update: function (obj, callback) {
@@ -83,9 +87,6 @@ define([
 
                     logger.debug("video source = " + JSON.stringify(vidSrc));
 
-                    var options = {};
-    
-                    this._player = video('my-player', options);
                     this._player.src(vidSrc);
                 }
                 catch(err) {
